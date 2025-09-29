@@ -40,7 +40,7 @@ export default function Home() {
     { error: "Server error" },
     { status: 500 }
   );
-
+}
   
 
   return (
