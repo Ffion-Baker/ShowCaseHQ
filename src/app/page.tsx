@@ -34,13 +34,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }
-
-  return NextResponse.json(
-    { error: "Server error" },
-    { status: 500 }
-  );
-}
+  };
   
 
   return (
