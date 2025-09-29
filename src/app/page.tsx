@@ -29,7 +29,7 @@ export default function Home() {
       } else {
         setMessage(data.error || "❌ Something went wrong.");
       }
-    } catch (err) {
+    } catch {
       setMessage("❌ Failed to connect. Try again.");
     } finally {
       setLoading(false);
