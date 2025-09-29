@@ -37,11 +37,19 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, data });
-  } catch (error: any) {
-    console.error("❌ Error:", error);
+  } catch (error: unknown) {
+  console.error("❌ Error:", error);
+
+  if (error instanceof Error) {
     return NextResponse.json(
-      { error: error.message || "Server error", details: error },
+      { error: error.message },
       { status: 500 }
     );
+  }
+
+  return NextResponse.json(
+    { error: "Server error" },
+    { status: 500 }
+  );
   }
 }
