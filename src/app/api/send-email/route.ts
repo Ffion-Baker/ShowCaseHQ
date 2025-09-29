@@ -22,7 +22,9 @@ export async function POST(req: Request) {
 
   try {
     // 1️⃣ Save email to Supabase
-    const { error } = await supabaseAdmin.from("waitlist_lookbook").insert([{ email }]);
+    const { error } = await supabaseAdmin
+      .from("waitlist_lookbook")
+      .insert([{ email }]);
     if (error) {
       console.error("Supabase insert error:", error);
       return NextResponse.json({ error: "Failed to save email" }, { status: 500 });
@@ -31,25 +33,18 @@ export async function POST(req: Request) {
     // 2️⃣ Send welcome email
     const data = await resend.emails.send({
       from: "ShowcaseHQ <onboarding@resend.dev>", // replace later with your domain
-      to: "grad.jobs90@gmail.com",
+      to: email, // send to the person signing up
       subject: "✨ Welcome to ShowcaseHQ Waitlist",
       react: WelcomeEmail({ email }),
     });
 
     return NextResponse.json({ success: true, data });
   } catch (error: unknown) {
-  console.error("❌ Error:", error);
-
-  if (error instanceof Error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
-  }
-
-  return NextResponse.json(
-    { error: "Server error" },
-    { status: 500 }
-  );
+    if (error instanceof Error) {
+      console.error("❌ Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    console.error("❌ Unknown error:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
