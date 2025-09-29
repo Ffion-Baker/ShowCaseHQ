@@ -29,11 +29,21 @@ export default function Home() {
       } else {
         setMessage(data.error || "❌ Something went wrong.");
       }
-    } catch {
-      setMessage("❌ Failed to connect. Try again.");
-    } finally {
-      setLoading(false);
-    }
+    } catch (error: unknown) {
+  console.error("❌ Error:", error);
+
+  if (error instanceof Error) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json(
+    { error: "Server error" },
+    { status: 500 }
+  );
+}
   };
 
   return (
