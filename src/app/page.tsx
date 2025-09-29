@@ -41,7 +41,7 @@ export default function Home() {
     { status: 500 }
   );
 
-  };
+  
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#0a0030] to-[#120040] text-white flex flex-col">
