@@ -29,13 +29,12 @@ export default function Home() {
       } else {
         setMessage(data.error || "❌ Something went wrong.");
       }
-    } catch  {
+    } catch {
       setMessage("❌ Failed to connect. Try again.");
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#0a0030] to-[#120040] text-white flex flex-col">
@@ -96,24 +95,32 @@ export default function Home() {
           <div>
             <div className="text-pink-400 text-4xl mb-4">📤</div>
             <h3 className="font-semibold text-xl">Upload</h3>
-            <p className="text-gray-400 mt-2">Add your brand photos in seconds.</p>
+            <p className="text-gray-400 mt-2">
+              Add your brand photos in seconds.
+            </p>
           </div>
           <div>
             <div className="text-blue-400 text-4xl mb-4">🎨</div>
             <h3 className="font-semibold text-xl">Choose</h3>
-            <p className="text-gray-400 mt-2">Pick a beautiful template instantly.</p>
+            <p className="text-gray-400 mt-2">
+              Pick a beautiful template instantly.
+            </p>
           </div>
           <div>
             <div className="text-pink-400 text-4xl mb-4">🔗</div>
             <h3 className="font-semibold text-xl">Share</h3>
-            <p className="text-gray-400 mt-2">Send your lookbook with a single link.</p>
+            <p className="text-gray-400 mt-2">
+              Send your lookbook with a single link.
+            </p>
           </div>
         </div>
       </section>
 
       {/* CTA Section with Email Form */}
       <section id="waitlist" className="px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold">Be the first to showcase your brand</h2>
+        <h2 className="text-3xl font-bold">
+          Be the first to showcase your brand
+        </h2>
         <p className="mt-4 text-gray-400">
           Join the waitlist today — early access spots are limited.
         </p>
@@ -139,9 +146,7 @@ export default function Home() {
           </button>
         </form>
 
-        {message && (
-          <p className="mt-4 text-sm text-gray-300">{message}</p>
-        )}
+        {message && <p className="mt-4 text-sm text-gray-300">{message}</p>}
       </section>
 
       {/* Footer */}
@@ -154,9 +159,12 @@ export default function Home() {
           className="mx-auto mb-3"
         />
         <p>© {new Date().getFullYear()} ShowcaseHQ · All rights reserved</p>
+        <p className="mt-2">
+          <Link href="/privacy" className="hover:text-pink-400">
+            Privacy Policy
+          </Link>
+        </p>
       </footer>
     </main>
   );
 }
-
-
