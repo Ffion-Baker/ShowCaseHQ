@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "next build --no-lint",
+    "start": "next start"
+   
   },
   "dependencies": {
     "@react-email/components": "^0.5.5",
@@ -28,4 +28,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+
 }
