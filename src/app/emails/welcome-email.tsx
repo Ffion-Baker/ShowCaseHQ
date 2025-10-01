@@ -1,4 +1,3 @@
-// src/app/emails/WelcomeEmail.tsx
 import * as React from "react";
 import {
   Html,
@@ -25,7 +24,7 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
         <Container style={container}>
           {/* Logo */}
           <Img
-            src="/LOGO.png" // 👉 replace with hosted ShowcaseHQ logo
+            src="/LOGO.png" // 👉 replace with hosted ShowcaseHQ logo if needed
             width="120"
             height="120"
             alt="ShowcaseHQ Logo"
@@ -65,6 +64,17 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
             ·{" "}
             <a href="https://instagram.com/showcasehq" style={{ color: "#ec4899" }}>
               Instagram
+            </a>
+          </Text>
+
+          <Text style={unsubscribe}>
+            <a
+              href={`https://showcasehq.com/unsubscribe?email=${encodeURIComponent(
+                email
+              )}`}
+              style={{ color: "#9ca3af" }}
+            >
+              Unsubscribe
             </a>
           </Text>
         </Container>
@@ -125,4 +135,12 @@ const footer = {
   fontSize: "12px",
   color: "#9ca3af",
   textAlign: "center" as const,
+  marginBottom: "12px",
+};
+
+const unsubscribe = {
+  fontSize: "11px",
+  color: "#9ca3af",
+  textAlign: "center" as const,
+  marginTop: "8px",
 };
