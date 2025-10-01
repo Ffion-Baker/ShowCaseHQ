@@ -75,7 +75,7 @@ export default function TermsPage() {
         <h2 className="text-xl font-semibold mt-6 mb-2">10. Contact Us</h2>
         <p className="mb-4 text-gray-300">
           If you have any questions about these Terms, please contact us at:{" "}
-          <a href="mailto:support@showcasehq.com" className="text-pink-400 underline">
+          <a href="mailto:support@showcasehq.co.uk" className="text-pink-400 underline">
             support@showcasehq.com
           </a>
         </p>

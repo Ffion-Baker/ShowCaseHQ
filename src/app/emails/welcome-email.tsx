@@ -52,7 +52,7 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
 
           <Text style={footer}>
             You’re receiving this email because you signed up at{" "}
-            <a href="https://showcasehq.com" style={{ color: "#ec4899" }}>
+            <a href="https://showcasehq.co.uk" style={{ color: "#ec4899" }}>
               showcasehq.com
             </a>
             .  
@@ -69,7 +69,7 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
 
           <Text style={unsubscribe}>
             <a
-              href={`https://showcasehq.com/unsubscribe?email=${encodeURIComponent(
+              href={`https://showcasehq.co.uk/unsubscribe?email=${encodeURIComponent(
                 email
               )}`}
               style={{ color: "#9ca3af" }}

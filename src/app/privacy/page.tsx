@@ -36,7 +36,7 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
         <p className="text-gray-300">
           If you have questions about this Privacy Policy, contact us at:{" "}
-          <a href="mailto:hello@showcasehq.com" className="text-pink-400">
+          <a href="mailto:hello@showcasehq.co.uk" className="text-pink-400">
             hello@showcasehq.com
           </a>
         </p>
