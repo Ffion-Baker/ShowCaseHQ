@@ -40,7 +40,7 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
 
           <Text style={text}>
             Thanks for joining the <strong>ShowcaseHQ waitlist</strong> 🎉  
-            You’re now one step closer to creating <em>stunning digital lookbooks</em> 
+            You’re now one step closer to creating <em>stunning digital lookbooks</em>  
             that you can share instantly with buyers, clients, and followers.
           </Text>
 
@@ -53,7 +53,7 @@ export default function WelcomeEmail({ email }: WelcomeEmailProps) {
           <Text style={footer}>
             You’re receiving this email because you signed up at{" "}
             <a href="https://showcasehq.co.uk" style={{ color: "#ec4899" }}>
-              showcasehq.com
+              showcasehq.co.uk
             </a>
             .  
             <br />
