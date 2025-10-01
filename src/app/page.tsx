@@ -149,21 +149,26 @@ export default function Home() {
         {message && <p className="mt-4 text-sm text-gray-300">{message}</p>}
       </section>
 
+      
       {/* Footer */}
       <footer className="mt-auto px-6 py-8 text-center text-gray-500 text-sm">
         <Image
-          src="/logo.png"
+          src="/LOGO.png"
           alt="ShowcaseHQ"
           width={30}
           height={30}
           className="mx-auto mb-3"
         />
         <p>© {new Date().getFullYear()} ShowcaseHQ · All rights reserved</p>
-        <p className="mt-2">
+        <div className="mt-2 flex justify-center gap-4">
           <Link href="/privacy" className="hover:text-pink-400">
             Privacy Policy
           </Link>
-        </p>
+          <span>·</span>
+          <Link href="/terms" className="hover:text-pink-400">
+            Terms of Service
+          </Link>
+        </div>
       </footer>
     </main>
   );
