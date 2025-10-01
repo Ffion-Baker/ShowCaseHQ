@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     // 2️⃣ Send welcome email
     const data = await resend.emails.send({
-      from: "ShowcaseHQ <no-reply@showcasehq.com>", // replace later with your domain
+      from: "ShowcaseHQ <no-reply@showcasehq.co.uk>", // replace later with your domain
       to: email, // send to the person signing up
       subject: "✨ Welcome to ShowcaseHQ Waitlist",
       react: WelcomeEmail({ email }),
