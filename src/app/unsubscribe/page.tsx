@@ -15,7 +15,7 @@ export default function UnsubscribePage() {
     }
 
     // Call API to unsubscribe
-    fetch(`/api/unsubscribe`, {
+    fetch(`/api/unsubscribe-backend`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
