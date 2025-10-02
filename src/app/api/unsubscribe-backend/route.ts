@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Create Supabase admin client with service role key
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // must be service_role key
+  process.env.SUPABASE_SERVICE_ROLE_KEY! // service key
 );
 
 export async function POST(req: Request) {
@@ -12,37 +11,43 @@ export async function POST(req: Request) {
     const { email } = await req.json();
 
     if (!email || typeof email !== "string") {
-      console.error("❌ No email provided in unsubscribe request");
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const trimmedEmail = email.trim().toLowerCase();
-    console.log("➡️ Unsubscribe request for:", trimmedEmail);
+    const lowerEmail = email.trim().toLowerCase();
 
-    // Try deleting from your table
-    const { data, error } = await supabaseAdmin
-      .from("waitlist_lookbook") // make sure this matches your table exactly
-      .delete()
-      .eq("email", trimmedEmail)
-      .select();
+    // First, find the row case-insensitive
+    const { data: found, error: findErr } = await supabaseAdmin
+      .from("waitlist_lookbook")
+      .select("id, email")
+      .ilike("email", lowerEmail); // case-insensitive match
 
-    if (error) {
-      console.error("❌ Supabase delete error:", error);
-      return NextResponse.json(
-        { error: error.message || "Failed to unsubscribe" },
-        { status: 500 }
-      );
+    if (findErr) {
+      console.error("❌ Supabase find error:", findErr);
+      return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 
-    if (!data || data.length === 0) {
-      console.warn("⚠️ Email not found in table:", trimmedEmail);
+    if (!found || found.length === 0) {
       return NextResponse.json({ error: "Email not found" }, { status: 404 });
     }
 
-    console.log("✅ Successfully unsubscribed:", data);
-    return NextResponse.json({ success: true, removed: data });
+    const ids = found.map((row) => row.id);
+
+    // Delete all matching rows
+    const { error: delErr } = await supabaseAdmin
+      .from("waitlist_lookbook")
+      .delete()
+      .in("id", ids);
+
+    if (delErr) {
+      console.error("❌ Supabase delete error:", delErr);
+      return NextResponse.json({ error: "Failed to unsubscribe" }, { status: 500 });
+    }
+
+    console.log(`✅ Unsubscribed: ${email}`);
+    return NextResponse.json({ success: true, removed: ids });
   } catch (err) {
-    console.error("❌ Server error in unsubscribe:", err);
+    console.error("❌ Server error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
