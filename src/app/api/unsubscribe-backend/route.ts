@@ -1,9 +1,11 @@
+// src/app/api/unsubscribe-backend/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+// Supabase admin client (uses service role key)
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // service key
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 export async function POST(req: Request) {
@@ -14,40 +16,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const lowerEmail = email.trim().toLowerCase();
+    const rawEmail = email.trim();
+    console.log("Unsubscribe request received for:", rawEmail);
 
-    // First, find the row case-insensitive
-    const { data: found, error: findErr } = await supabaseAdmin
-      .from("waitlist_lookbook")
-      .select("id, email")
-      .ilike("email", lowerEmail); // case-insensitive match
-
-    if (findErr) {
-      console.error("❌ Supabase find error:", findErr);
-      return NextResponse.json({ error: "Database error" }, { status: 500 });
-    }
-
-    if (!found || found.length === 0) {
-      return NextResponse.json({ error: "Email not found" }, { status: 404 });
-    }
-
-    const ids = found.map((row) => row.id);
-
-    // Delete all matching rows
-    const { error: delErr } = await supabaseAdmin
+    // 🔑 Delete using case-insensitive match (cast supabaseAdmin to any)
+    const { data, error } = await (supabaseAdmin as any)
       .from("waitlist_lookbook")
       .delete()
-      .in("id", ids);
+      .ilike("email", rawEmail);
 
-    if (delErr) {
-      console.error("❌ Supabase delete error:", delErr);
+    if (error) {
+      console.error("Supabase delete error:", error);
       return NextResponse.json({ error: "Failed to unsubscribe" }, { status: 500 });
     }
 
-    console.log(`✅ Unsubscribed: ${email}`);
-    return NextResponse.json({ success: true, removed: ids });
+    if (data && data.length > 0) {
+      console.log("Deleted rows:", data);
+      return NextResponse.json({ success: true, removed: data });
+    }
+
+    console.warn("No matching rows found for email:", rawEmail);
+    return NextResponse.json({ error: "Email not found" }, { status: 404 });
   } catch (err) {
-    console.error("❌ Server error:", err);
+    console.error("Server error in unsubscribe:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
