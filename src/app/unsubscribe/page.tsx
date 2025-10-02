@@ -10,24 +10,31 @@ export default function UnsubscribePage() {
     const email = params.get("email");
 
     if (!email) {
-      setStatus("Invalid unsubscribe link.");
+      setStatus("❌ Invalid unsubscribe link (no email found).");
       return;
     }
 
-    // Call API to unsubscribe
-    fetch(`/api/unsubscribe-backend`, {
+    // Call your unsubscribe backend
+    fetch("/api/unsubscribe-backend", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ email }),
     })
-      .then((res) => {
+      .then(async (res) => {
+        const data = await res.json();
+
         if (res.ok) {
-          setStatus("✅ You’ve been unsubscribed from ShowcaseHQ emails.");
+          setStatus(`✅ You’ve been unsubscribed: ${email}`);
         } else {
-          setStatus("⚠️ Something went wrong. Please try again later.");
+          setStatus(`❌ Failed to unsubscribe: ${data.error || "Unknown error"}`);
         }
       })
-      .catch(() => setStatus("⚠️ Network error. Please try again."));
+      .catch((err) => {
+        console.error("Network error:", err);
+        setStatus("⚠️ Network error. Please try again later.");
+      });
   }, []);
 
   return (
