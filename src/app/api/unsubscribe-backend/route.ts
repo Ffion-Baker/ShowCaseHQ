@@ -19,6 +19,13 @@ export async function POST(req: Request) {
     const normalizedEmail = email.trim().toLowerCase();
     console.log("Unsubscribe request received for:", normalizedEmail);
 
+    const { data: check, error: checkError } = await supabaseAdmin
+      .from("waitlist_lookbook")
+      .select("email")
+      .eq("email", normalizedEmail);
+
+    console.log("Lookup result before delete:", check, "Error:", checkError);
+
     // Delete matching row(s)
     const { data, error } = await supabaseAdmin
       .from("waitlist_lookbook")
