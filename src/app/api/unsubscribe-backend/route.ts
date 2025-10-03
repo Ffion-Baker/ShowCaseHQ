@@ -1,8 +1,7 @@
-// src/app/api/unsubscribe-backend/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Supabase admin client (use service role key)
+// Supabase admin client (uses service role key, bypasses RLS)
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -16,26 +15,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    console.log("Unsubscribe request received for:", email);
+    // Normalize the email for consistent matching
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log("Unsubscribe request received for:", normalizedEmail);
 
-    // Delete only if it matches exactly
+    // Delete matching row(s)
     const { data, error } = await supabaseAdmin
       .from("waitlist_lookbook")
       .delete()
-      .eq("email", email)
-      .select();
+      .eq("email", normalizedEmail)
+      .select("*"); // return deleted rows
 
     if (error) {
       console.error("Supabase delete error:", error);
       return NextResponse.json({ error: "Failed to unsubscribe" }, { status: 500 });
     }
 
-    if (data?.length > 0) {
+    if (data && data.length > 0) {
       console.log("Deleted rows:", data);
       return NextResponse.json({ success: true, removed: data });
     }
 
-    console.warn("No matching rows found for email:", email);
+    console.warn("No matching rows found for email:", normalizedEmail);
     return NextResponse.json({ error: "Email not found" }, { status: 404 });
   } catch (err) {
     console.error("Server error in unsubscribe:", err);
